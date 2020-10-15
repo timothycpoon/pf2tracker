@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { post } from '../utils';
 
 class Login extends React.Component {
     constructor(props) {
@@ -12,7 +13,7 @@ class Login extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log(`submitted ${JSON.stringify(this.state)}`)
+        post('/login', this.state);
     }
 
     handleInputChange(target) {

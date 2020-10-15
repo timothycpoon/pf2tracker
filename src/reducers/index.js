@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
 
 export default combineReducers({
-  test: (state = {}) => state,
+  login: (state = null) => state,
 });

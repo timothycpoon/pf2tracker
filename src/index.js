@@ -9,7 +9,7 @@ import './index.css';
 import App from './App';
 
 // Note: this API requires redux@>=3.1.0
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, JSON.parse(document.getElementById('initial-store').innerHTML), applyMiddleware(thunk));
 
 ReactDOM.render(
     <React.StrictMode>
