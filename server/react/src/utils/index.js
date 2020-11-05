@@ -11,5 +11,37 @@ export function post(url, data) {
         redirect: 'follow', // manual, *follow, error
         referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
         body: JSON.stringify(data) // body data type must match "Content-Type" header
+    })
+    .then(res => {
+        if (res.ok) {
+            return res.json();
+        }
+        let err;
+        try {
+            res.text().then(text => err = text);
+        } catch(e) {
+            err = res.statusText;
+        }
+        throw err;
     });
+}
+
+export function getDefaultCreature() {
+    return {
+      creature_id: null,
+      name: '',
+      hp: {
+        maxHP: 1,
+        currHP: 1
+      },
+      ac: 10,
+      fortitude: 0,
+      reflex: 0,
+      will: 0,
+      initiative: {
+        initSkill: 'perception',
+        perception: 0,
+        stealth: 0,
+      },
+    };
 }

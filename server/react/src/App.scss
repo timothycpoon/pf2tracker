@@ -1,0 +1,80 @@
+.App {
+  text-align: center;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.flexbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.App-header {
+  background-color: #eee;
+  height: 20vh;
+  font-size: calc(10px + 2vmin);
+  padding: 50px 0;
+
+  h1 {
+    margin: 0;
+  }
+
+  .login {
+    float: right;
+
+    .login-form {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      label {
+        margin: 0 10px;
+      }
+    }
+  }
+}
+
+.error {
+  color: red;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.App-container {
+  margin: auto;
+  min-height: 100vh;
+
+  .cell {
+    display: flex;
+    align-items: center;
+
+    .init-input {
+      margin-right: 5px;
+    }
+  }
+
+  .hp-slash {
+    font-size: 48px;
+  }
+
+  .num-field {
+    max-width: 80px;
+  }
+
+  .skill-option {
+    text-transform: capitalize;
+  }
+}

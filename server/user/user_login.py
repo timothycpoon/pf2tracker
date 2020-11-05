@@ -1,5 +1,4 @@
 from flask_login import UserMixin
-from sqlalchemy import Column, Integer, String, Date
 from server.app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -9,10 +8,6 @@ class UserLogin(UserMixin, db.Model):
     username = db.Column('username', db.String(50), index=True, unique=True)
     email = db.Column('email', db.String(128), index=True, unique=True)
     password = db.Column('password', db.String(128))
-
-    def save():
-        db.session.add(this)
-        db.session.commit()
 
     def __repr__(self):
         return f"<UserLogin {self.id} username='{self.username}' email='{self.email}'>"
@@ -29,3 +24,9 @@ class UserLogin(UserMixin, db.Model):
             'username': self.username,
             'email': self.email,
         }
+
+def get_by_id(id):
+    return UserLogin.query.get(int(id))
+
+def get_by_username(username):
+    return UserLogin.query.filter_by(username=username).first()
