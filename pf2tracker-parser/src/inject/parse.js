@@ -42,7 +42,7 @@ const parseStrike = (name, text) => {
         return {
             name: matches[1],
             bonus: matches[2],
-            traits: matches[3].split(', '),
+            traits: (matches[3] || '').split(', '),
             damage: matches[4],
             type: matches[5],
             additional: matches[6],
@@ -68,7 +68,7 @@ const parsePreparedSpontaneous = (tradition, type, text) => {
                 const levelMatches = spellLevel.match('Cantrips \\(([1-9]|10)\\w*\\) (.*)');
                 if (levelMatches) {
                     data.cantripLevel = parseInt(levelMatches[1]);
-                    data.cantrips = levelMatches[2].split(', ').map(name => ({
+                    data.cantrips = (levelMatches[2] || '').split(', ').map(name => ({
                         tradition,
                         name,
                         level: data.cantripLevel,
@@ -77,7 +77,7 @@ const parsePreparedSpontaneous = (tradition, type, text) => {
             } else {
                 const levelMatches = spellLevel.match(`([1-9]|10)[\\w]* ${isSpontaneous ? `\\((${numberRegex}) slots\\) ` : ''}(.*)`);
                 if (levelMatches) {
-                    data.spells.push(...levelMatches[isSpontaneous ? 3 : 2].split(', ').map((spell) => {
+                    data.spells.push(...(levelMatches[isSpontaneous ? 3 : 2] || '').split(', ').map((spell) => {
                         const spellMatches = spell.match(`(.*)(?: \\(x(${numberRegex})\\))?`)
                         return {
                             tradition,
@@ -111,18 +111,18 @@ const parseInnate = (tradition, text) => {
                 const levelMatches = spellLevel.match('Cantrips \\(([1-9]|10)\\w*\\) (.*)');
                 if (levelMatches) {
                     data.cantripLevel = parseInt(levelMatches[1]);
-                    data.cantrips = levelMatches[2].split(', ');
+                    data.cantrips = (levelMatches[2] || '').split(', ');
                 }
             } else if (spellLevel.startsWith('Constant')) {
                 const levelMatches = spellLevel.match('Constant \\(([1-9]|10)\\w*\\) (.*)');
                 if (levelMatches) {
                     const level = parseInt(levelMatches[1]);
-                    data.innateSpells.push(...levelMatches[2].split(', ').map((name) => ({ name, level, frequency: 'Constant' })));
+                    data.innateSpells.push(...(levelMatches[2] || '').split(', ').map((name) => ({ name, level, frequency: 'Constant' })));
                 }
             } else {
                 const levelMatches = spellLevel.match(`([1-9]|10)[\\w]* (.*)`);
                 if (levelMatches) {
-                    data.innateSpells.push(...levelMatches[2].split(', ').map((spell) => {
+                    data.innateSpells.push(...(levelMatches[2] || '').split(', ').map((spell) => {
                         const spellMatches = spell.match(`([\\w ]*\\w)(?: \\(((?:at will)|x)(${numberRegex})?\\))?`);
                         if (spellMatches) {
                             const isAtWill = spellMatches[2] === 'at will';
