@@ -36,7 +36,8 @@ const parseHP = (text) => {
 }
 
 const parseStrike = (name, text) => {
-    const matches = text.match(`${name} \\[one-action\\] ([\\w ]*) (${bonusRegex}) \\(([^)]*)\\), (?:Damage|Effect) (${numberRegex}d${numberRegex}(?:${bonusRegex})?)?(?: (\\w+))? ?(.*)?`);
+    debugger;
+    const matches = text.match(`${name} \\[one-action\\] ([\\w ]*) (${bonusRegex})(?: \\(([^)]*)\\))?, (?:Damage|Effect) (${numberRegex}d${numberRegex}(?:${bonusRegex})?)?(?: (\\w+))? ?(.*)?`);
     if (matches) {
         return {
             name: matches[1],

@@ -10,7 +10,7 @@ const Header = () => {
             <div className="col-md-3">
                 <NavLink to="/extension">Parser Extension</NavLink>
             </div>
-            <h1 className="col-md-6 flexbox"> Pathfinder 2 Tracker </h1>
+            <h1 className="col-md-6 flexbox"><NavLink to="/">Pathfinder 2 Tracker</NavLink></h1>
             <div className="login col-md-3 flexbox">
                 {
                     login
