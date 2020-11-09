@@ -7,6 +7,9 @@ coverage/
 # production
 dist/
 
+# downlads
+server/react/pf2tracker-parser.zip
+
 # misc
 .DS_Store
 .env.local

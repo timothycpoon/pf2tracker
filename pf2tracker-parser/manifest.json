@@ -18,11 +18,11 @@
   },
   "page_action": {
     "default_icon": "icons/icon19.png",
-    "default_title": "page action demo",
+    "default_title": "PF2 Tracker Parser",
     "default_popup": "src/page_action/page_action.html"
   },
   "permissions": [
-    "https://pf2.d20pfsrd.com/*"
+    "https://pf2.d20pfsrd.com/monster/*"
   ],
   "content_scripts": [
     {
