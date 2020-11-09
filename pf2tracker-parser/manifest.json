@@ -1,0 +1,40 @@
+{
+  "name": "Pathfinder 2e SRD Parser Roll20",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "This extension parses creature stat blocks from pf2.d20pfsrd.com. Outputs in JSON intended for use with Roll20 and https://justas-d.github.io/roll20-enhancement-suite/",
+  "homepage_url": "https://pf2-tracker.herokuapp.com/",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "default_locale": "en",
+  "background": {
+    "scripts": [
+      "src/bg/background.js"
+    ],
+    "persistent": false
+  },
+  "page_action": {
+    "default_icon": "icons/icon19.png",
+    "default_title": "page action demo",
+    "default_popup": "src/page_action/page_action.html"
+  },
+  "permissions": [
+    "https://pf2.d20pfsrd.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://pf2.d20pfsrd.com/monster/*"
+      ],
+      "js": [
+        "js/jquery/jquery.min.js",
+        "src/inject/parse.js",
+        "src/inject/roll20.js",
+        "src/inject/inject.js"
+      ]
+    }
+  ]
+}

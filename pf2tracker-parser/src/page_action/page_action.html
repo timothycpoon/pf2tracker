@@ -1,0 +1,24 @@
+<!doctype html>
+<style type="text/css">
+	#mainPopup {
+		padding: 10px;
+		height: 200px;
+		width: 400px;
+		font-family: Helvetica, Ubuntu, Arial, sans-serif;
+	}
+	h1 {
+		font-size: 2em;
+	}
+</style>
+<script src="../../js/jquery/jquery.min.js"></script>
+<script src="page_action.js"></script>
+
+<div id="mainPopup">
+<h1>Pathfinder 2e SRD Parser</h1>
+<label>Output Format:</label>
+<select name="format" id="format">
+    <option value="roll20">Roll20 (VTT Enhancement Suite)</option>
+</select>
+<button id="parse-cta">Parse!</button>
+<div id="error"></div>
+</div>
