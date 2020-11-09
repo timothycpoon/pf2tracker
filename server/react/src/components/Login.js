@@ -28,7 +28,7 @@ const Login = () => {
         <form className="login-form">
             <TextField label="Username" variant="outlined" value={username} onChange={e => setUsername(e.target.value)}/>
             <TextField label="Password" type="password" variant="outlined" value={password} onChange={e => setPassword(e.target.value)}/>
-            <Button onClick={handleSubmit}>Login</Button>
+            <Button variant="outlined" onClick={handleSubmit}>Login</Button>
         </form>
         {errorText && <div className="error">{errorText}</div>}
     </div>;

@@ -143,11 +143,13 @@ const Initiative = () => {
 				</TableBody>
 			</Table>
 			<Button
+				variant="outlined"
 				onClick={() => dispatch(addCreature())}
 			>
 				+
 			</Button>
 			<Button
+				variant="outlined"
 				onClick={rollInit}
 			>
 				Roll Initiative!
