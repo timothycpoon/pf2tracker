@@ -41,7 +41,7 @@ const parseStrike = (name, text) => {
         return {
             name: matches[1],
             bonus: matches[2],
-            traits: matches[3],
+            traits: matches[3].split(', '),
             damage: matches[4],
             type: matches[5],
             additional: matches[6],
@@ -50,7 +50,7 @@ const parseStrike = (name, text) => {
     return null;
 }
 
-const parsePreparedSpontaneous = (type, text) => {
+const parsePreparedSpontaneous = (tradition, type, text) => {
     const matches = text.match(`DC (${numberRegex})(?:, attack (${bonusRegex}))?; (.*)`);
     const isSpontaneous = type === 'Spontaneous';
     if (matches) {
@@ -67,7 +67,11 @@ const parsePreparedSpontaneous = (type, text) => {
                 const levelMatches = spellLevel.match('Cantrips \\(([1-9]|10)\\w*\\) (.*)');
                 if (levelMatches) {
                     data.cantripLevel = parseInt(levelMatches[1]);
-                    data.cantrips = levelMatches[2].split(', ');
+                    data.cantrips = levelMatches[2].split(', ').map(name => ({
+                        tradition,
+                        name,
+                        level: data.cantripLevel,
+                    }));
                 }
             } else {
                 const levelMatches = spellLevel.match(`([1-9]|10)[\\w]* ${isSpontaneous ? `\\((${numberRegex}) slots\\) ` : ''}(.*)`);
@@ -75,6 +79,7 @@ const parsePreparedSpontaneous = (type, text) => {
                     data.spells.push(...levelMatches[isSpontaneous ? 3 : 2].split(', ').map((spell) => {
                         const spellMatches = spell.match(`(.*)(?: \\(x(${numberRegex})\\))?`)
                         return {
+                            tradition,
                             name: spellMatches[1],
                             uses: parseInt(spellMatches[2]) || (isSpontaneous ? 0 : 1),
                             level: parseInt(levelMatches[1]),
@@ -92,7 +97,7 @@ const parsePreparedSpontaneous = (type, text) => {
     return {};
 }
 
-const parseInnate = (text) => {
+const parseInnate = (tradition, text) => {
     const matches = text.match(`DC (${numberRegex})(?:, attack (${bonusRegex}))?; (.*)`);
     if (matches) {
         const data = {
@@ -101,7 +106,13 @@ const parseInnate = (text) => {
             innateSpells: [],
         };
         matches[3].split('; ').forEach((spellLevel) => {
-            if (spellLevel.startsWith('Constant')) {
+            if (spellLevel.startsWith('Cantrips')) {
+                const levelMatches = spellLevel.match('Cantrips \\(([1-9]|10)\\w*\\) (.*)');
+                if (levelMatches) {
+                    data.cantripLevel = parseInt(levelMatches[1]);
+                    data.cantrips = levelMatches[2].split(', ');
+                }
+            } else if (spellLevel.startsWith('Constant')) {
                 const levelMatches = spellLevel.match('Constant \\(([1-9]|10)\\w*\\) (.*)');
                 if (levelMatches) {
                     const level = parseInt(levelMatches[1]);
@@ -115,6 +126,7 @@ const parseInnate = (text) => {
                         if (spellMatches) {
                             const isAtWill = spellMatches[2] === 'at will';
                             return {
+                                tradition,
                                 name: spellMatches[1],
                                 uses: isAtWill ? 0 : parseInt(spellMatches[3]) || 1,
                                 level: parseInt(levelMatches[1]),
@@ -132,14 +144,14 @@ const parseInnate = (text) => {
 }
 
 const parseSpells = (text) => {
-    const matches = text.match(`(Spontaneous|Prepared|Innate) Spells (.*)`);
+    const matches = text.match(`(Arcane|Primal|Occult|Divine) (Spontaneous|Prepared|Innate) Spells (.*)`);
     if (matches) {
-        switch (matches[1]) {
+        switch (matches[2]) {
             case 'Spontaneous':
             case 'Prepared':
-                return parsePreparedSpontaneous(matches[1], matches[2]);
+                return parsePreparedSpontaneous(matches[1], matches[2], matches[3]);
             case 'Innate':
-                return parseInnate(matches[2]);
+                return parseInnate(matches[1], matches[3]);
         }
     }
     return {};
@@ -153,6 +165,11 @@ const addSectionToCreature = (creature, name, section) => {
         if (matches) {
             creature.perception = parseInt(matches[1]);
             creature.senses = matches[2];
+        }
+    } else if (name === 'Perception') {
+        const matches = text.match(`Perception (${bonusRegex})`);
+        if (matches) {
+            creature.perception = parseInt(matches[1]);
         }
     } else if (toDirectlyTranscribe.includes(name)) {
         const matches = text.match(`${name} (.*)`);
@@ -250,7 +267,7 @@ const parseCreature = () => {
 
     data.find('p').each((idx, el) => {
         const sectionName = el.childNodes[0];
-        if (sectionName.tagName === 'B') {
+        if (['B', 'STRONG'].includes(sectionName.tagName)) {
             addSectionToCreature(creature, sectionName.innerHTML, el);
         }
     });
