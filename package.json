@@ -2,7 +2,7 @@
   "name": "pf2tracker",
   "version": "0.1.0",
   "scripts": {
-    "heroku-prebuild": "npm install --dev --prefix server/react",
+    "heroku-prebuild": "npm install --dev --prefix server/react && zip -r server/react/pf2tracker-parser.zip pf2tracker-parser",
     "postinstall": "npm install --prefix server/react && npm run --prefix server/react build"
   }
 }
